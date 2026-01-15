@@ -1,0 +1,194 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Encabezado */
+header {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 14px;
+    color: #cccccc;
+}
+
+/* Contenido principal */
+main {
+    padding: 30px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Tarjetas */
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #222;
+}
+
+/* Formularios */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: #1f1f1f;
+}
+
+/* Botones */
+button {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #333333;
+}
+
+/* Tablas (para listar datos) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #1f1f1f;
+    color: white;
+}
+
+
+
+        /* Gradientes y colores suaves */
+        body {
+            background: linear-gradient(to right, #fdfbfb, #ebedee);
+        }
+
+        header {
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-custom {
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            border: none;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(90deg, #e52e71, #ff8a00);
+        }
+
+        footer {
+             background: linear-gradient(90deg, #ff8a00, #e52e71);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        /* Inputs con sombras suaves */
+        .form-control, .form-select {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+    
+
+        .btn-gradient {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    color: white !important;
+    padding: 10px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    border-radius: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(90deg, #e52e71, #ff8a00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+

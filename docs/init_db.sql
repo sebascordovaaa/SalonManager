@@ -1,38 +1,55 @@
 -- =========================================================
--- SCRIPT INICIALIZADOR DE BASE DE DATOS PARA EL PROYECTO CLIENTES
--- Autor: Juan Carlos Sulbarán González
--- Fecha: 2025-11-12
--- Descripción:
---   Este script elimina la base de datos si ya existe,
---   la vuelve a crear desde cero y define la tabla 'clientes'.
+-- scipt basico para inicializar la base de datos
 -- =========================================================
 
--- 1️⃣ Borrar la base de datos si ya existe
-DROP DATABASE IF EXISTS clientes_db;
+CREATE DATABASE peluqueria_db;
+USE peluqueria_db;
 
--- 2️⃣ Crear una nueva base de datos
-CREATE DATABASE clientes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-
--- 3️⃣ Seleccionar la base de datos recién creada
-USE clientes_db;
-
--- 4️⃣ Crear tabla 'clientes'
 CREATE TABLE clientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    telefono VARCHAR(50),
-    direccion VARCHAR(255)
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    telefono VARCHAR(20),
+    email VARCHAR(50),
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5️⃣ Insertar algunos registros de ejemplo
-INSERT INTO clientes (nombre, apellido, email, telefono, direccion) VALUES
-('Juan', 'Pérez', 'juan.perez@example.com', '555-0101', 'Calle 123, Ciudad'),
-('María', 'García', 'maria.garcia@example.com', '555-0102', 'Avenida 456, Ciudad'),
-('Carlos', 'Rodríguez', 'carlos.rodriguez@example.com', '555-0103', 'Plaza 789, Ciudad'),
-('Ana', 'Martínez', 'ana.martinez@example.com', '555-0104', 'Paseo 321, Ciudad'),
-('Luis', 'López', 'luis.lopez@example.com', '555-0105', 'Boulevard 654, Ciudad');
 
--- 6️⃣ Confirmar
-SELECT * FROM clientes;
+CREATE TABLE empleados (
+    id_empleado INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    especialidad VARCHAR(50),
+    telefono VARCHAR(20)
+);
+
+
+
+CREATE TABLE servicios (
+    id_servicio INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL
+);
+
+
+CREATE TABLE citas (
+    id_cita INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    id_empleado INT NOT NULL,
+    id_servicio INT NOT NULL,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+    FOREIGN KEY (id_servicio) REFERENCES servicios(id_servicio)
+);
+
+
+INSERT INTO clientes (nombre, telefono, email)
+VALUES ('Juan Pérez', '123456789', 'juan@mail.com');
+
+INSERT INTO empleados (nombre, especialidad, telefono)
+VALUES ('María López', 'Cortes', '987654321');
+
+INSERT INTO servicios (nombre, precio)
+VALUES ('Corte de cabello', 15.00);
+
+INSERT INTO citas (id_cliente, id_empleado, id_servicio, fecha)
+VALUES (1, 1, 1, '2026-01-20 15:00:00');
