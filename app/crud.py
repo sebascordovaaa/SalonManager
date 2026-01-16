@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, cast
-from database import get_connection
+from app.database import get_connection
 from mysql.connector.cursor import MySQLCursorDict
 
 # ========================= CLIENTES =========================
@@ -10,7 +10,9 @@ def fetch_all_clientes() -> List[Dict[str, Any]]:
         cur: MySQLCursorDict
         cur = conn.cursor(dictionary=True)  # type: ignore[assignment]
         try:
-            cur.execute("SELECT id_cliente, nombre, apellido, email, telefono, direccion FROM clientes;")
+            cur.execute(
+                "SELECT id_cliente, nombre, email, telefono, fecha_registro FROM clientes;"
+            )
             rows = cast(List[Dict[str, Any]], cur.fetchall())
             return rows
         finally:
@@ -19,7 +21,8 @@ def fetch_all_clientes() -> List[Dict[str, Any]]:
         if conn:
             conn.close()
 
-def insert_cliente(nombre: str, apellido: str, email: str, telefono: str | None = None, direccion: str | None = None) -> int:
+
+def insert_cliente(nombre: str,  email: str, telefono: str | None = None) -> int:
     conn = None
     try:
         conn = get_connection()
@@ -27,10 +30,10 @@ def insert_cliente(nombre: str, apellido: str, email: str, telefono: str | None 
         try:
             cur.execute(
                 """
-                INSERT INTO clientes (nombre, apellido, email, telefono, direccion)
-                VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO clientes (nombre, email, telefono)
+                VALUES (%s, %s, %s)
                 """,
-                (nombre, apellido, email, telefono, direccion)
+                (nombre,  email, telefono)
             )
             conn.commit()
             return cur.lastrowid or 0
@@ -48,7 +51,7 @@ def fetch_cliente_by_id(cliente_id: int) -> Dict[str, Any] | None:
         cur = conn.cursor(dictionary=True)  # type: ignore[assignment]
         try:
             cur.execute(
-                "SELECT id_cliente, nombre, apellido, email, telefono, direccion FROM clientes WHERE id_cliente = %s",
+                "SELECT id_cliente, nombre, email, telefono, fecha_registro FROM clientes WHERE id_cliente = %s",
                 (cliente_id,)
             )
             result = cur.fetchone()
@@ -58,6 +61,7 @@ def fetch_cliente_by_id(cliente_id: int) -> Dict[str, Any] | None:
     finally:
         if conn:
             conn.close()
+
 
 def update_cliente(cliente_id: int, nombre: str, apellido: str, email: str, telefono: str | None = None, direccion: str | None = None) -> bool:
     conn = None

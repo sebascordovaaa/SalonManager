@@ -8,7 +8,7 @@ def get_connection():
         host=os.getenv("DB_HOST", "localhost"),        # <— corregidos nombres
         user=os.getenv("DB_USER", "root"),
         password=os.getenv("DB_PASSWORD", ""),
-        database=os.getenv("DB_NAME", "clientes_db"),
+        database=os.getenv("DB_NAME", "peluqueria_db"),
         port=int(os.getenv("DB_PORT", "3307")),
         charset="utf8mb4"
     )
