@@ -29,6 +29,11 @@ class ClientesBase(BaseModel):
     nombre: str
     email: str
     telefono: Optional[str] = None
+    direccion: Optional[str] = None
+    ciudad: Optional[str] = None    
+    estado: Optional[str] = None
+    codigo_postal: Optional[str] = None
+    fecha_nacimiento: Optional[datetime] = None
 
 # Modelo para lectura de BD (sin validaciones estrictas, acepta datos históricos)
 class ClientesDB(BaseModel):
@@ -36,6 +41,11 @@ class ClientesDB(BaseModel):
     nombre: str
     email: str
     telefono: Optional[str] = None
+    direccion: Optional[str] = None
+    ciudad: Optional[str] = None
+    estado: Optional[str] = None
+    codigo_postal: Optional[str] = None
+    fecha_nacimiento: Optional[datetime] = None
     fecha_registro: Optional[datetime] = None
 
 # Modelo para crear cliente (sin ID)
@@ -61,6 +71,11 @@ def map_rows_to_clientes(rows: List[dict]) -> List[ClientesDB]:
             nombre=row["nombre"],
             email=row["email"],
             telefono=row.get("telefono"),
+            direccion=row.get("direccion"),
+            ciudad=row.get("ciudad"),
+            estado=row.get("estado"),
+            codigo_postal=row.get("codigo_postal"),
+            fecha_nacimiento=row.get("fecha_nacimiento"),
             fecha_registro=row.get("fecha_registro")
         )
         for row in rows
@@ -96,9 +111,14 @@ def form_nuevo_cliente(request: Request):
 def crear_cliente(
     nombre: str = Form(...),
     email: str = Form(...),
-    telefono: Optional[str] = Form(None)
+    telefono: Optional[str] = Form(None),
+    direccion: Optional[str] = Form(None),
+    ciudad: Optional[str] = Form(None),
+    estado: Optional[str] = Form(None),
+    codigo_postal: Optional[str] = Form(None),
+    fecha_nacimiento: Optional[datetime] = Form(None)
 ):
-    crud.insert_cliente(nombre, telefono, email)
+    crud.insert_cliente(nombre, telefono, email, direccion, ciudad, estado, codigo_postal, fecha_nacimiento)
     return RedirectResponse(url="/", status_code=303)
 
 
@@ -115,9 +135,14 @@ def editar_cliente(
     cliente_id: int,
     nombre: str = Form(...),
     email: str = Form(...),
-    telefono: Optional[str] = Form(None)
+    telefono: Optional[str] = Form(None),
+    direccion: Optional[str] = Form(None),
+    ciudad: Optional[str] = Form(None),
+    estado: Optional[str] = Form(None),
+    codigo_postal: Optional[str] = Form(None),
+    fecha_nacimiento: Optional[datetime] = Form(None)
 ):
-    crud.update_cliente(cliente_id, nombre, email, telefono)
+    crud.update_cliente(cliente_id, nombre, email, telefono, direccion, ciudad, estado, codigo_postal, fecha_nacimiento)
     return RedirectResponse(url="/", status_code=303)
 
 
@@ -134,111 +159,3 @@ def eliminar_cliente(cliente_id: int):
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return RedirectResponse(url="/", status_code=303)
 
-
-
-# ========================= EMPLEADOS =========================
-@app.get("/empleados/nuevo", response_class=HTMLResponse)
-def form_nuevo_empleado(request: Request):
-    return templates.TemplateResponse("nuevo_empleado.html", {"request": request})
-
-@app.post("/empleados/nuevo")
-def crear_empleado(
-    nombre: str = Form(...),
-    especialidad: str = Form(...),
-    telefono: Optional[str] = Form(None),
-    email: Optional[str] = Form(None)
-):
-    crud.insert_empleado(nombre, especialidad, telefono, email)
-    return RedirectResponse(url="/empleados", status_code=303)
-
-@app.get("/empleados/editar/{empleado_id}", response_class=HTMLResponse)
-def form_editar_empleado(request: Request, empleado_id: int):
-    empleado = crud.fetch_empleado_by_id(empleado_id)
-    if not empleado:
-        raise HTTPException(status_code=404, detail="Empleado no encontrado")
-    return templates.TemplateResponse("editar_empleado.html", {"request": request, "empleado": empleado})
-
-@app.post("/empleados/editar/{empleado_id}")
-def editar_empleado(
-    empleado_id: int,
-    nombre: str = Form(...),
-    especialidad: str = Form(...),
-    telefono: Optional[str] = Form(None),
-    email: Optional[str] = Form(None)
-):
-    crud.update_empleado(empleado_id, nombre, especialidad, telefono, email)
-    return RedirectResponse(url="/empleados", status_code=303)
-
-# ========================= SERVICIOS =========================
-@app.get("/servicios/nuevo", response_class=HTMLResponse)
-def form_nuevo_servicio(request: Request):
-    return templates.TemplateResponse("nuevo_servicio.html", {"request": request})
-
-@app.post("/servicios/nuevo")
-def crear_servicio(
-    nombre: str = Form(...),
-    precio: float = Form(...)
-):
-    crud.insert_servicio(nombre, precio)
-    return RedirectResponse(url="/servicios", status_code=303)
-
-@app.get("/servicios/editar/{servicio_id}", response_class=HTMLResponse)
-def form_editar_servicio(request: Request, servicio_id: int):
-    servicio = crud.fetch_servicio_by_id(servicio_id)
-    if not servicio:
-        raise HTTPException(status_code=404, detail="Servicio no encontrado")
-    return templates.TemplateResponse("editar_servicio.html", {"request": request, "servicio": servicio})
-
-@app.post("/servicios/editar/{servicio_id}")
-def editar_servicio(
-    servicio_id: int,
-    nombre: str = Form(...),
-    precio: float = Form(...)
-):
-    crud.update_servicio(servicio_id, nombre, precio)
-    return RedirectResponse(url="/servicios", status_code=303)
-
-# ========================= CITAS =========================
-@app.get("/citas/nuevo", response_class=HTMLResponse)
-def form_nueva_cita(request: Request):
-    clientes = crud.fetch_all_clientes()
-    empleados = crud.fetch_all_empleados()
-    servicios = crud.fetch_all_servicios()
-    return templates.TemplateResponse(
-        "nueva_cita.html",
-        {"request": request, "clientes": clientes, "empleados": empleados, "servicios": servicios}
-    )
-
-@app.post("/citas/nuevo")
-def crear_cita(
-    id_cliente: int = Form(...),
-    id_empleado: int = Form(...),
-    id_servicio: int = Form(...),
-    fecha: str = Form(...)
-):
-    crud.insert_cita(id_cliente, id_empleado, id_servicio, fecha)
-    return RedirectResponse(url="/citas", status_code=303)
-
-@app.get("/citas/editar/{cita_id}", response_class=HTMLResponse)
-def form_editar_cita(request: Request, cita_id: int):
-    cita = crud.fetch_cita_by_id(cita_id)
-    if not cita:
-        raise HTTPException(status_code=404, detail="Cita no encontrada")
-    clientes = crud.fetch_all_clientes()
-    empleados = crud.fetch_all_empleados()
-    servicios = crud.fetch_all_servicios()
-    return templates.TemplateResponse(
-        "editar_cita.html",
-        {"request": request, "cita": cita, "clientes": clientes, "empleados": empleados, "servicios": servicios}
-    )
-
-@app.post("/citas/editar/{cita_id}")
-def editar_cita(
-    cita_id: int,
-    id_cliente: int = Form(...),
-    id_empleado: int = Form(...),
-    id_servicio: int = Form(...),
-    fecha: str = Form(...)
-):
-    crud.update_cita(cita_id, id_cliente, id_empleado, id_servicio, fecha)
-    return RedirectResponse(url="/citas", status_code=303)

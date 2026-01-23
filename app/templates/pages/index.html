@@ -44,8 +44,13 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>                       
+                        <th>Email</th>
+                        <th>Teléfono</th>                        
+                        <th>Dirección</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Código Postal</th>
+                        <th>Fecha de Nacimiento</th>
                         <th>Registro</th>
                         <th>Acciones</th>
                     </tr>
@@ -54,8 +59,13 @@
                     {% for c in clientes %}
                     <tr>
                         <td>{{ c.nombre }}</td>
-                        <td>{{ c.telefono }}</td>
                         <td>{{ c.email }}</td>
+                        <td>{{ c.telefono }}</td>
+                        <td>{{ c.direccion }}</td>
+                        <td>{{ c.ciudad }}</td>
+                        <td>{{ c.estado }}</td>
+                        <td>{{ c.codigo_postal }}</td>
+                        <td>{{ c.fecha_nacimiento }}</td>
                         <td>{{ c.fecha_registro }}</td>
                         <td>
                             <a href="/editar_clientes/{{ c.id }}" class="edit-btn">✏️</a>
