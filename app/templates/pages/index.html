@@ -24,9 +24,6 @@
 
     <!-- Banner inicial -->
     <div class="card shadow-sm mb-5">
-        <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702"
-             class="card-img-top rounded-top"
-             alt="Peluquería moderna">
         <div class="card-body">
             <h4 class="card-title">Panel de Gestión</h4>
             <p class="card-text">
@@ -40,7 +37,7 @@
     <div class="card p-4 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>Clientes</h4>
-            <a href="/clientes/nuevo" class="btn btn-gradient">➕ Añadir Cliente</a>
+            <a href="/crear_clientes" class="btn btn-gradient">➕ Añadir Cliente</a>
         </div>
         <div class="table-container">
             <table class="table table-hover align-middle">
@@ -48,7 +45,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Teléfono</th>
-                        <th>Email</th>
+                        <th>Email</th>                       
                         <th>Registro</th>
                         <th>Acciones</th>
                     </tr>
@@ -61,8 +58,8 @@
                         <td>{{ c.email }}</td>
                         <td>{{ c.fecha_registro }}</td>
                         <td>
-                            <a href="/clientes/editar/{{ c.id_cliente }}" class="edit-btn">✏️</a>
-                            <a href="/clientes/eliminar/{{ c.id_cliente }}" onclick="return confirm('¿Eliminar este cliente?')" class="delete-btn">🗑</a>
+                            <a href="/editar_clientes/{{ c.id }}" class="edit-btn">✏️</a>
+                            <a href="/clientes/eliminar/{{ c.id }}" onclick="return confirm('¿Eliminar este cliente?')" class="delete-btn">🗑</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -170,56 +167,8 @@
         </div>
     </div>
 
-    <!-- Imagen final -->
-    <div class="card shadow-sm mt-5">
-        <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250"
-             class="card-img-top rounded"
-             alt="Interior peluquería premium">
-    </div>
-
 </div>
 
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover mb-0">
-    <thead class="table-secondary">
-      <tr>
-        <th scope="col" class="text-center d-none">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Email</th>
-        <th scope="col">Teléfono</th>
-        <th scope="col" class="text-center">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for cliente in clientes %}
-      <tr>
-        <td class="text-center fw-bold d-none">{{ cliente.id }}</td>
-        <td>{{ cliente.nombre }}</td>
-        <td>
-          <a href="mailto:{{ cliente.email }}" class="text-decoration-none">
-      <i class="bi bi-envelope me-1"></i>{{ cliente.email }}
-          </a>
-        </td>
-        <td>
-          <i class="bi bi-telephone me-1"></i>{{ cliente.telefono }}
-        </td>
-
-        <td class="text-center">
-          <a href="/clientes/editar/{{ cliente.id }}" class="btn btn-sm btn-warning me-1" title="Editar cliente">
-            <i class="bi bi-pencil-square"></i>
-          </a>
-          <a href="#" class="btn btn-sm btn-danger" data-id="{{ cliente.id }}" title="Eliminar cliente">
-            <i class="bi bi-trash"></i>
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-        </table>
-      </div>
-    </div>
-    
 <!-- Footer -->
 <footer>
     &copy; 2026 — Sistema CRUD de Peluquería

@@ -22,7 +22,7 @@ def fetch_all_clientes() -> List[Dict[str, Any]]:
             conn.close()
 
 
-def insert_cliente(nombre: str,  email: str, telefono: str | None = None) -> int:
+def insert_cliente(nombre: str, telefono: str, email: str | None = None) -> int:
     conn = None
     try:
         conn = get_connection()
@@ -30,10 +30,10 @@ def insert_cliente(nombre: str,  email: str, telefono: str | None = None) -> int
         try:
             cur.execute(
                 """
-                INSERT INTO clientes (nombre, email, telefono)
+                INSERT INTO clientes (nombre, telefono, email)
                 VALUES (%s, %s, %s)
                 """,
-                (nombre,  email, telefono)
+                (nombre, telefono, email)
             )
             conn.commit()
             return cur.lastrowid or 0
@@ -63,7 +63,7 @@ def fetch_cliente_by_id(cliente_id: int) -> Dict[str, Any] | None:
             conn.close()
 
 
-def update_cliente(cliente_id: int, nombre: str, apellido: str, email: str, telefono: str | None = None, direccion: str | None = None) -> bool:
+def update_cliente(cliente_id: int, nombre: str, email: str, telefono: str | None = None) -> bool:
     conn = None
     try:
         conn = get_connection()
@@ -72,10 +72,10 @@ def update_cliente(cliente_id: int, nombre: str, apellido: str, email: str, tele
             cur.execute(
                 """
                 UPDATE clientes 
-                SET nombre = %s, apellido = %s, email = %s, telefono = %s, direccion = %s
+                SET nombre = %s, email = %s, telefono = %s
                 WHERE id_cliente = %s
                 """,
-                (nombre, apellido, email, telefono, direccion, cliente_id)
+                (nombre, email, telefono, cliente_id)
             )
             conn.commit()
             return cur.rowcount > 0
