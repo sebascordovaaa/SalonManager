@@ -5,7 +5,6 @@ from fastapi.templating import Jinja2Templates
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, field_validator, ValidationError
 from typing import Optional, List
-import app.crud as crud
 import re
 
 
@@ -15,14 +14,13 @@ app = FastAPI(title="SalonManager")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Motor de plantillas
-templates = Jinja2Templates(directory="app/templates/pages")
+templates = Jinja2Templates(directory="app/templates")
 
 
 # Importar funciones
 from app.crud import(
     fetch_all_clientes,
     delete_cliente
-
 )
 # Modelo base para cliente (campos comunes, sin ID)
 class ClientesBase(BaseModel):
@@ -79,7 +77,7 @@ def get_index(request: Request):
     clientes = map_rows_to_clientes(rows)
 
     return templates.TemplateResponse(
-        "index.html",
+        "pages/index.html",
         {
             "request": request,
             "clientes": clientes
@@ -87,38 +85,42 @@ def get_index(request: Request):
     )
 
 # ========================= CLIENTES =========================
-@app.get("/crear_clientes", response_class=HTMLResponse)
+@app.get("/clientes/nuevo", response_class=HTMLResponse)
 def form_nuevo_cliente(request: Request):
-    return templates.TemplateResponse("crear_clientes.html", {"request": request})
+    return templates.TemplateResponse("nuevo_cliente.html", {"request": request})
 
 
-@app.post("/crear_clientes")
+@app.post("/clientes/nuevo")
 def crear_cliente(
     nombre: str = Form(...),
+    apellido: str = Form(...),
     email: str = Form(...),
-    telefono: Optional[str] = Form(None)
+    telefono: Optional[str] = Form(None),
+    direccion: Optional[str] = Form(None)
 ):
-    crud.insert_cliente(nombre, telefono, email)
-    return RedirectResponse(url="/", status_code=303)
+    crud.insert_cliente(nombre, apellido, email, telefono, direccion)
+    return RedirectResponse(url="/clientes", status_code=303)
 
 
-@app.get("/editar_clientes/{cliente_id}", response_class=HTMLResponse)
+@app.get("/clientes/editar/{cliente_id}", response_class=HTMLResponse)
 def form_editar_cliente(request: Request, cliente_id: int):
     cliente = crud.fetch_cliente_by_id(cliente_id)
     if not cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
-    return templates.TemplateResponse("editar_clientes.html", {"request": request, "cliente": cliente})
+    return templates.TemplateResponse("editar_cliente.html", {"request": request, "cliente": cliente})
 
 
-@app.post("/editar_clientes/{cliente_id}")
+@app.post("/clientes/editar/{cliente_id}")
 def editar_cliente(
     cliente_id: int,
     nombre: str = Form(...),
+    apellido: str = Form(...),
     email: str = Form(...),
-    telefono: Optional[str] = Form(None)
+    telefono: Optional[str] = Form(None),
+    direccion: Optional[str] = Form(None)
 ):
-    crud.update_cliente(cliente_id, nombre, email, telefono)
-    return RedirectResponse(url="/", status_code=303)
+    crud.update_cliente(cliente_id, nombre, apellido, email, telefono, direccion)
+    return RedirectResponse(url="/clientes", status_code=303)
 
 
 
