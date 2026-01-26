@@ -68,8 +68,8 @@
                         <td>{{ c.fecha_nacimiento }}</td>
                         <td>{{ c.fecha_registro }}</td>
                         <td>
-                            <a href="/editar_clientes/{{ c.id }}" class="edit-btn">✏️</a>
-                            <a href="/clientes/eliminar/{{ c.id }}" onclick="return confirm('¿Eliminar este cliente?')" class="delete-btn">🗑</a>
+                            <a href="/editar_clientes/{{ c.id_cliente }}" class="edit-btn">✏️</a>
+                            <a href="/clientes/eliminar/{{ c.id_cliente }}" onclick="return confirm('¿Eliminar este cliente?')" class="delete-btn">🗑</a>
                         </td>
                     </tr>
                     {% endfor %}

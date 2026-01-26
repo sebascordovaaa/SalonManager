@@ -2,6 +2,8 @@
 -- scipt basico para inicializar la base de datos
 -- =========================================================
 
+DROP DATABASE IF EXISTS peluqueria_db;
+
 CREATE DATABASE peluqueria_db;
 USE peluqueria_db;
 
@@ -24,3 +26,5 @@ INSERT INTO clientes (nombre, email, telefono, direccion, ciudad, estado, codigo
 VALUES (
     'María López', 'maria.lopez@email.com', '555-123-4567',  
     'Av. Reforma 123, Col. Centro', 'Ciudad de México', 'CDMX', '06000', '1985-04-15' );
+
+select * from clientes;
