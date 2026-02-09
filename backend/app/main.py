@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, field_validator, ValidationError
 from typing import Optional, List
@@ -11,6 +12,19 @@ import re
 
 app = FastAPI(title="SalonManager")
 
+# Configurar CORS
+origins = [
+    "http://localhost:5173",  # tu frontend
+    "http://127.0.0.1:5173",  # también se puede usar la IP
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # permite estos orígenes
+    allow_credentials=True,
+    allow_methods=["*"],         # permite GET, POST, PUT, DELETE, etc.
+    allow_headers=["*"],         # permite cualquier encabezado
+)
 # Servir archivos estáticos
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
